@@ -1,3 +1,50 @@
+# Diagonal Function:-
+def diagonal(i, j, puzzle, word):
+    # Left Diagonal:
+    length = len(word) - 1
+    r = i
+    c = j
+    num = 1
+    sig = 0
+    for k in range(length):
+        if r == 0 or c == 0:
+            sig = 0
+            break
+        if puzzle[r - 1][c - 1] == word[num]:
+            num += 1
+            r -= 1
+            c -= 1
+            sig = 1
+        else:
+            sig = 0
+            break
+    if sig == 1:
+        return 1
+
+    # Diagonal Right:-
+    length = len(word) - 1
+    r = i
+    c = j
+    num = 1
+    sig = 0
+    for k in range(length):
+        if r == len(puzzle) - 1 or c == len(puzzle) - 1:
+            sig = 0
+            break
+        if puzzle[r + 1][c + 1] == word[num]:
+            num += 1
+            r += 1
+            c += 1
+            sig = 1
+        else:
+            sig = 0
+            break
+    if sig == 1:
+        return 1
+    else:
+        return 0
+
+
 # Vertical Function:-
 def vertical(i, j, puzzle, word):
     length = len(word) - 1
@@ -7,7 +54,8 @@ def vertical(i, j, puzzle, word):
     num = 1
     sig = 0
     for k in range(length):
-        if r == 1:
+        if r == 0:
+            sig = 0
             break
         if puzzle[r - 1][c] == word[num]:
             num += 1
@@ -25,7 +73,8 @@ def vertical(i, j, puzzle, word):
     num = 1
     sig = 0
     for k in range(length):
-        if r == 11:
+        if r == len(puzzle) - 1:
+            sig = 0
             break
         if puzzle[r + 1][c] == word[num]:
             num += 1
@@ -49,14 +98,12 @@ def horizontal(i, j, puzzle, word):
     num = 1
     sig = 0
     for k in range(length):
-        if c == 1:
+        if c == 0:
+            sig = 0
             break
         if puzzle[r][c - 1] == word[num]:
             num += 1
             c -= 1
-            # if c < 0 or c > 11:
-            #     sig = 0
-            #     break
             sig = 1
         else:
             sig = 0
@@ -70,7 +117,8 @@ def horizontal(i, j, puzzle, word):
     num = 1
     sig = 0
     for k in range(length):
-        if c == 11:
+        if c == len(puzzle) - 1:
+            sig = 0
             break
         if puzzle[r][c + 1] == word[num]:
             num += 1
@@ -88,9 +136,9 @@ def horizontal(i, j, puzzle, word):
 # Locator Function:-
 def locator(word, arr):
     first_char = word[0]
-    for i in range(0, 12):  # row
+    for i in range(0, len(puzzle)):  # row
 
-        for j in range(0, 12):  # column
+        for j in range(0, len(puzzle)):  # column
             if arr[i][j] == first_char:
                 val_h = horizontal(i, j, puzzle, word)
                 if val_h == 1:
@@ -98,14 +146,18 @@ def locator(word, arr):
                     return 1
                 val_v = vertical(i, j, puzzle, word)
                 if val_v == 1:
-                    print('The word', word, 'is found in the vertical row, from:-', i, ',', j)
+                    print('The word', word, 'is found in the vertical column, from:-', i, ',', j)
                     return 1
+                val_d = diagonal(i, j, puzzle, word)
+                if val_d == 1:
+                    print('The word', word, 'is found in the slant diagonal, from:-', i, ',', j)
     return 0
 
 
 # Driver Code:-
 sample = ['add', 'count', 'even', 'less', 'long', 'math', 'minus', 'more', 'number', 'odd', 'plus', 'subtract', 'sum',
           'total', 'wide']
+# Replaceable sample and puzzle.
 puzzle = [['b', 'f', 'v', 't', 's', 'a', 'j', 'm', 'o', 'r', 'e', 'h'],
           ['p', 'y', 'l', 'o', 'n', 'g', 'd', 'q', 'i', 'u', 'm', 'z'],
           ['k', 'm', 'f', 'h', 'c', 'v', 'e', 'b', 'x', 'j', 'a', 'r'],
@@ -123,4 +175,3 @@ for item in sample:
     res = locator(item, puzzle)
     if res == 0:
         print(item, 'is not found in the puzzle!')
-
